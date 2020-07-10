@@ -1,6 +1,8 @@
 # coreiRST.NET.POC
 Fully functional ASP.NET core 3.0 MVC integrated with iSeries coreiRST Webservice API's
 
+More about me and my vast IBMi experience here... www.jeffersonvaughn.com
+
 Corei-RST provides an IBMi http framework (using Apache) and IBMi side API library that assists with
             traditional iSeries shops in creating/maintaining/implementing webservice API programs over
             their DB2 data.  Traditional RPG developers do not need to learn anything related to cross platform
