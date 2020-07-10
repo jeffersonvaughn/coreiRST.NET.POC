@@ -2,6 +2,7 @@
 Fully functional ASP.NET core 3.0 MVC integrated with iSeries coreiRST Webservice API's
 
 More about me and my vast IBMi experience here... www.jeffersonvaughn.com
+
 IBMi side CoreiRST framework can be downloaded here and used for free (with trial key)... https://jeffersonvaughn.com/Core-i-Product-Downloads/ 
 
 Corei-RST provides an IBMi http framework (using Apache) and IBMi side API library that assists with
