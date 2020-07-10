@@ -8,7 +8,7 @@ Corei-RST provides an IBMi http framework (using Apache) and IBMi side API libra
             to create/deploy an Apache HTTP server instance with a single option execution.  No manual configuration
             is required.  For SSL/TLS, the instance can allow either user/password authentication or certificate
             authentication.  Steps to configure the IBMi server side certificate and export to .NET side can be
-            found in documentation link above.
+            found in documentation link below.
 
             The IBMi COREIRST tool will allow admins/developers to auto generate API's (and provide them with
             the SQLRPGLE code) with a few parameter inputs.  COREIRST utilizes an IBMi middleware program that
