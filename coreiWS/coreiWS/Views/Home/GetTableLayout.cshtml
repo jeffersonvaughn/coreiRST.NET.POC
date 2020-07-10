@@ -1,0 +1,73 @@
+﻿@model GetTableLayout
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+    <div class="text-center">
+        <h1 class="display-8">Core-i Solutions</h1>
+        <h1 class="display-7">Core-i Rst </h1>
+        <h1 class="display-4">IBMi API: getTableLayout </h1>
+        <p> The getTableLayout API json request consists of a list of IBMi library/files to pull file layouts for.  This API demonstrates how easy it is to retrieve dynamic system data from the IBMi.</p>
+
+
+        <div class="col-3">
+            <a button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("Index")'">Back To API List</button></a>
+            <p>
+                <br />
+            </p>
+        </div>
+
+
+        @if (Model.success == 1)
+        {
+            <table class="table table-bordered table-hover">
+                <tr class="table-danger">
+                    <th>Schema</th>
+                    <th>Table</th>
+                    <th>Short Column</th>
+                    <th>Long Column</th>
+                </tr>
+
+                @foreach (var table in Model.list)
+                {
+                    <tr class="table-info">
+                        <td>@table.schema</td>
+                        <td>@table.table</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    @foreach (var column in table.columns)
+                    {
+                        <tr class="table-info">
+                            <td></td>
+                            <td></td>
+                            <td>@column.shortColumn</td>
+                            <td>@column.longColumn</td>
+                        </tr>
+                    }
+                }
+            </table>
+        }
+        else
+        {
+
+            <dl class="row table table-bordered table-hover">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.resultMessage)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.resultMessage)
+                </dd>
+
+
+            </dl>
+
+        }
+
+    </div>

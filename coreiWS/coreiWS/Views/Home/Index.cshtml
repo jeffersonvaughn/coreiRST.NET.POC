@@ -1,0 +1,70 @@
+﻿@model GetListOfAPIs
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+    <div class="text-center">
+        <h1 class="display-8">Core-i Solutions</h1>
+        <p> Core-i RST IBMi Server Consumable Sample SQLRPGLE API's</p>
+        <p> This list of sample API's is pulled directly from the IBMi Core-iRST API library.</p>
+
+        <div class="col-3">
+            <a button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("coreiOverview")'">Display Core-i RST Overview</button></a>
+            <p>
+                <br />
+            </p>
+        </div>
+
+
+
+        @if (Model.success == 1)
+        {
+            <table class="table table-bordered table-hover">
+                <tr class="table-danger">
+                    <th>Library</th>
+                    <th>API</th>
+                    <th>IBM i Program</th>
+                    <th>Request Example</th>
+                    <th>Action</th>
+                </tr>
+
+                @foreach (var item in Model.list)
+
+                {
+                    <tr class="table-info">
+                        <td>@item.library</td>
+                        <td>@item.api</td>
+                        <td>@item.ibmiPgm</td>
+                        <td>
+                            <pre>@Newtonsoft.Json.Linq.JToken.Parse(item.requestExample).ToString()</pre>
+                        </td>
+
+                        <td>
+                            <button typeof="button" onclick="location.href='@Url.Action(item.api, "", new { api = item.api, jsonRequest = item.requestExample })'">Consume IBMi Core-iRST API</button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        }
+        else
+        {
+
+            <dl class="row table table-bordered table-hover">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.resultMessage)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.resultMessage)
+                </dd>
+
+
+            </dl>
+
+        }
+
+
+    </div>

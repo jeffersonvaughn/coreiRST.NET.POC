@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "U8KO1MeWhpXkz5x9x53UzsrSQZc+A//jJYw2NIrQjXiim6OrI/OEn+1LqsdShZoJtNSzWG4BwTfSfuqyVoCh8Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiWS\\coreiWS\\coreiWS\\coreiWS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jeffe\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
