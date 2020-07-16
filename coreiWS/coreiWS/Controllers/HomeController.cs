@@ -78,8 +78,8 @@ namespace coreiWS.Controllers
         const string g_Url = "https://yourIBMi.com/rest/rst00001r/";
         // traditionally IBMi userProfiles and passwords are 10 long all caps, but more modern configs include 
         // 128length passwords that are case sensitive.
-        const string g_userProfile = "xxxxxxxxxx";
-        const string g_password = "xxxxxxxxxx";
+        const string g_userProfile = "XXXXXXXXXX";
+        const string g_password = "Xxxxxxxxxx";
         const string g_coreiErrorJSON   = "{\"success\":0,\"resultMessage\":\"" + "Corei-Rst API modifyAPIRequest json response appears to be invalid\"}";
         const string g_coreiErrorServer = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  Ensure the server is up and running and try your request again.\"}";
 
@@ -107,9 +107,9 @@ namespace coreiWS.Controllers
                                               ",{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"getCustomerBankAccountInfo\"}" +
                                               "]}";
 
-            var responseString = await ExecuteCoreiHttpRequest<GetListOfAPIs>(jsonRequest);
-            g_listOfAPIs = JsonConvert.DeserializeObject<GetListOfAPIs>(responseString);
+            g_listOfAPIs = (GetListOfAPIs) await ExecuteCoreiHttpRequest<GetListOfAPIs>(jsonRequest);
             return View(g_listOfAPIs);
+
 
 
         }   // end getListOfAPIs API
@@ -122,8 +122,7 @@ namespace coreiWS.Controllers
         public async Task<IActionResult> endPointExecutionTimeOnly(string jsonRequest)
         {
 
-            var responseString = await ExecuteCoreiHttpRequest<EndPointExecutionTimeOnly>(jsonRequest);
-            g_executionTime = JsonConvert.DeserializeObject<EndPointExecutionTimeOnly>(responseString);
+            g_executionTime = (EndPointExecutionTimeOnly)await ExecuteCoreiHttpRequest<EndPointExecutionTimeOnly>(jsonRequest);
             return View(g_executionTime);
 
         }   
@@ -138,8 +137,7 @@ namespace coreiWS.Controllers
         public async Task<IActionResult> getTableLayout(string jsonRequest)
         {
 
-            var responseString = await ExecuteCoreiHttpRequest<GetTableLayout>(jsonRequest);
-            g_tableLayout = JsonConvert.DeserializeObject<GetTableLayout>(responseString);
+            g_tableLayout = (GetTableLayout)await ExecuteCoreiHttpRequest<GetTableLayout>(jsonRequest);
             return View(g_tableLayout);
 
         }   
@@ -153,8 +151,7 @@ namespace coreiWS.Controllers
         public async Task<IActionResult> getCustomerBankAccountInfo( string jsonRequest)
         {
 
-            var responseString = await ExecuteCoreiHttpRequest<GetCustomerBankAccountInfo>(jsonRequest);
-            g_bankAccountInfo = JsonConvert.DeserializeObject<GetCustomerBankAccountInfo>(responseString);
+            g_bankAccountInfo = (GetCustomerBankAccountInfo)await ExecuteCoreiHttpRequest<GetCustomerBankAccountInfo>(jsonRequest);
             return View(g_bankAccountInfo);
 
         }   
@@ -193,8 +190,7 @@ namespace coreiWS.Controllers
                                         "}}";
 
 
-            var responseString = await ExecuteCoreiHttpRequest<ModifyAPIRequest>(jsonRequest);
-            g_apiRequest = JsonConvert.DeserializeObject<ModifyAPIRequest>(responseString);
+            g_apiRequest = (ModifyAPIRequest)await ExecuteCoreiHttpRequest<ModifyAPIRequest>(jsonRequest);
             return View(g_apiRequest);
 
         }   
@@ -214,7 +210,7 @@ namespace coreiWS.Controllers
         //------------------------------------------------------------------------------------------------------------
         // display corei overview
         //------------------------------------------------------------------------------------------------------------
-        public async Task<string> ExecuteCoreiHttpRequest<T>(string jsonRequest)
+        public async Task<object> ExecuteCoreiHttpRequest<T>(string jsonRequest)
         {
 
 
@@ -260,7 +256,7 @@ namespace coreiWS.Controllers
                     // good response
                     //---------------------------------------------------------------
                     var responseString = await response.Content.ReadAsStringAsync();
-                    return responseString;
+                    return (JsonConvert.DeserializeObject<T>(responseString));
                 }
                     //---------------------------------------------------------------
                     // api json response issue
@@ -268,7 +264,7 @@ namespace coreiWS.Controllers
                     catch (Exception e)
                     {
                    
-                    return g_coreiErrorJSON;
+                    return (JsonConvert.DeserializeObject<T>(g_coreiErrorJSON));
                 }
 
             }
@@ -278,7 +274,7 @@ namespace coreiWS.Controllers
                catch (Exception e)
                {
 
-                return g_coreiErrorServer;
+                return (JsonConvert.DeserializeObject<T>(g_coreiErrorServer));
 
             }
         }
