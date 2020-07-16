@@ -5,27 +5,29 @@ using System.Threading.Tasks;
 
 namespace coreiWS.Models
 {
-    public class GetListOfAPIs
+    public class ModifyAPIRequest
     {
-        public int success { get; set; }
-            public string resultMessage { get; set; }
-            public List[] list { get; set; }
 
+        public int success { get; set; }
+        public string resultMessage { get; set; }
+
+        public List[] list { get; set; }
 
         public class List
         {
-            public string apiLibrary { get; set; }
-            public string apiCommand { get; set; }
-            public string ibmiPgm { get; set; }
-            public string requestExample { get; set; }
+             public string apiLibrary { get; set; }
+             public string apiCommand { get; set; }
+             public string requestExample { get; set; }
+
 
             public string firstChar
             {
                 get { return requestExample != null ? requestExample.Substring(0, 1) : ""; }
             }
 
+
         }
 
-    }
 
+    }
 }

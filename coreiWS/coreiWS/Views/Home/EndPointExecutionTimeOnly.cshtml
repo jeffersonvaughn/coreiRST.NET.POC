@@ -1,0 +1,33 @@
+﻿@model EndPointExecutionTimeOnly
+
+
+@{
+    ViewData["Title"] = "EndPointExecutionTimeOnly";
+}
+
+    <div class="text-center">
+        <h1 class="display-8">Core-i Solutions</h1>
+        <p> Core-i RST Endpoint Execution Time Only</p>
+
+        <div class="col-3">
+            <a button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("Index")'">Back To API List</button></a>
+            <p>
+                <br />
+            </p>
+        </div>
+
+
+            <dl class="row table table-bordered table-hover">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.resultMessage)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.resultMessage)
+                </dd>
+
+
+            </dl>
+
+    </div>
+

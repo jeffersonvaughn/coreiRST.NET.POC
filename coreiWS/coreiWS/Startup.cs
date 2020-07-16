@@ -34,6 +34,7 @@ namespace coreiWS
                  });
 
             services.AddHttpClient();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,6 +61,10 @@ namespace coreiWS
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
+                   name: "endPointExecutionTimeOnly",
+                  pattern: "{controller=Home}/{action=endPointExecutionTimeOnly}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "getTableLayout",
                     pattern: "{controller=Home}/{action=getTableLayout}/{id?}");
 
@@ -71,8 +76,13 @@ namespace coreiWS
                      name: "coreiOverview",
                      pattern: "{controller=Home}/{action=coreiOverview}/{id?}");
 
+                endpoints.MapControllerRoute(
+                     name: "modifyAPIRequest",
+                     pattern: "{controller=Home}/{action=modifyAPIRequest}/{id?}");
+
 
             });
         }
     }
+
 }

@@ -18,13 +18,13 @@
         </div>
 
 
-
         @if (Model.success == 1)
         {
+
             <table class="table table-bordered table-hover">
                 <tr class="table-danger">
-                    <th>Library</th>
-                    <th>API</th>
+                    <th>API Library</th>
+                    <th>API Command</th>
                     <th>IBM i Program</th>
                     <th>Request Example</th>
                     <th>Action</th>
@@ -33,18 +33,31 @@
                 @foreach (var item in Model.list)
 
                 {
-                    <tr class="table-info">
-                        <td>@item.library</td>
-                        <td>@item.api</td>
-                        <td>@item.ibmiPgm</td>
-                        <td>
-                            <pre>@Newtonsoft.Json.Linq.JToken.Parse(item.requestExample).ToString()</pre>
-                        </td>
+            <tr class="table-info">
+                <td>@item.apiLibrary</td>
+                <td>@item.apiCommand</td>
+                <td>@item.ibmiPgm</td>
+                <td>
+                    <dd>
 
-                        <td>
-                            <button typeof="button" onclick="location.href='@Url.Action(item.api, "", new { api = item.api, jsonRequest = item.requestExample })'">Consume IBMi Core-iRST API</button>
-                        </td>
-                    </tr>
+                        @if (@item.firstChar == "{")
+                        {
+                            <pre>@Newtonsoft.Json.Linq.JToken.Parse(@item.requestExample).ToString()</pre>
+                        }
+                        else
+                        {
+                           <pre>@item.requestExample</pre>
+                        }
+                    </dd>
+                </td>
+
+
+                    <td>
+                        <!-- url.action does not have access to browser side variables (only server side)-->
+                        <button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("modifyAPIRequest", "", new { displayOnly = true,  apiLibrary = item.apiLibrary, apiCommand = item.apiCommand, requestExample = item.requestExample })'">Modify Request Example</button>
+                        <button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action(item.apiCommand, "", new { jsonRequest = item.requestExample })'">Consume IBMi Core-iRST API</button>
+                    </td>
+                </tr>
                 }
 
             </table>

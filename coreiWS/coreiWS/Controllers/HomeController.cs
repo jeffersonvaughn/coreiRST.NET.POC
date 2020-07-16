@@ -46,7 +46,7 @@ using System.Runtime.CompilerServices;
 //             is required.  For SSL/TLS, the instance can allow either user/password authentication or certificate 
 //             authentication.  Steps to configure the IBMi server side certificate and export to .NET side can be
 //             found in documentation link above.
-//             The IBMi COREIRST tool will allow admins/developers to auto generate API's (and provide them with
+//             The IBMi COREIRST tool will allow IBMi admins/developers to auto generate API's (and provide them with
 //             the SQLRPGLE code) with a few parameter inputs.  COREIRST utilizes an IBMi middleware program that
 //             handles all the http cross platform confusion a traditional RPG developer may have to face in normal
 //             implementations.  All they need to do is create SQLRPGLE programs just like they have always done.
@@ -67,23 +67,27 @@ namespace coreiWS.Controllers
     {
 
         private readonly IHttpClientFactory _clientFactory;
-
-        public GetListOfAPIs listOfAPIs { get; set; }
-        public GetTableLayout tableLayout { get; set; }
-        public GetCustomerBankAccountInfo bankAccountInfo { get; set; }
+        public GetListOfAPIs              g_listOfAPIs { get; set; }
+        public EndPointExecutionTimeOnly  g_executionTime { get; set; }
+        public ModifyAPIRequest           g_apiRequest { get; set; }
+        public GetTableLayout             g_tableLayout { get; set; }
+        public GetCustomerBankAccountInfo g_bankAccountInfo { get; set; }
 
         // the IBMi server COREIRST install will allow an IBMi admin/dev to create/deploy the server instance
         // it will be referenced as follows with routing to the IBMi Core-iRST webservice middleware.
-        string Url = "https://yourIBMiServer.com/rest/rst00001r/";
+        const string g_Url = "https://yourIBMi.com/rest/rst00001r/";
         // traditionally IBMi userProfiles and passwords are 10 long all caps, but more modern configs include 
         // 128length passwords that are case sensitive.
-        const string userProfile = "xxxxxxxx";
-        const string password = "xxxxxx";
+        const string g_userProfile = "xxxxxxxxxx";
+        const string g_password = "xxxxxxxxxx";
+        const string g_coreiErrorJSON   = "{\"success\":0,\"resultMessage\":\"" + "Corei-Rst API modifyAPIRequest json response appears to be invalid\"}";
+        const string g_coreiErrorServer = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  Ensure the server is up and running and try your request again.\"}";
 
         public HomeController(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
         }
+
 
         //------------------------------------------------------------------------------------------------------------
         // getListOfAPIs API called when program called and displays response data
@@ -97,67 +101,36 @@ namespace coreiWS.Controllers
             // tables must be qualified by library name (schema.table) within the API OR a library list must be
             // specified that includes the library(s) of those referenced file(s)...
             // the library list can be set from within the IBMi CoreiRST (Maintain API Library - F7=Maintain ENV Libl)
-            const string jsonRequest = "{\"env\":\"xxx\",\"command\":\"getListOfAPIs\",\"payload\":[{\"library\":\"COREIRST\",\"api\":\"getTableLayout\"},{\"library\":\"COREIRST\",\"api\":\"getCustomerBankAccountInfo\"}]}";
+            const string jsonRequest = "{\"env\":\"xxx\",\"command\":\"getListOfAPIs\",\"payload\":[" +
+                                              "{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"endPointExecutionTimeOnly\"}" +
+                                              ",{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"getTableLayout\"}" +
+                                              ",{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"getCustomerBankAccountInfo\"}" +
+                                              "]}";
 
-            // Get = jsonRequest/REST parm passed in url
-            //  - Example REST with customer number parm - http://wwww.yourdomain.com/rest/rst00001r/203
-            // Post = jsonRequest passed in body
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                //RequestUri = new Uri(Url + jsonRequest), 
-                RequestUri = new Uri(Url),
-                Content = new StringContent(jsonRequest, System.Text.Encoding.Default, "text/plain"),
-            };
+            var responseString = await ExecuteCoreiHttpRequest<GetListOfAPIs>(jsonRequest);
+            g_listOfAPIs = JsonConvert.DeserializeObject<GetListOfAPIs>(responseString);
+            return View(g_listOfAPIs);
 
-            var client = _clientFactory.CreateClient();
-
-            client.DefaultRequestHeaders.Authorization =
-                 new AuthenticationHeaderValue(
-                     "Basic", Convert.ToBase64String(
-                                                     System.Text.ASCIIEncoding.ASCII.GetBytes(
-                                                                                           $"{userProfile}:{password}")));
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("text/plain"));
-
-            try
-            {
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    // corei will return a http status code stating whether API call successful or not, along with response data
-                }
-                else
-                {
-                    // corei will return a http status code, however, if an error, it will be provided in a user friendly message in the json response
-                }
-
-                // when not a client/server connection issue, always load response to the model... supports success/error messages
-                try { 
-                var responseString = await response.Content.ReadAsStringAsync();   
-                listOfAPIs = JsonConvert.DeserializeObject<GetListOfAPIs>(responseString);
-                return View(listOfAPIs);
-            }
-            // api json response issue
-            catch (Exception e)
-            {
-                var responseString = "{\"success\":0,\"resultMessage\":\"Corei-Rst API getListOfAPIs json response appears to be invalid\"}";
-                listOfAPIs = JsonConvert.DeserializeObject<GetListOfAPIs>(responseString);
-                return View(listOfAPIs);
-            }
-
-        }
-            // client/server connection issue
-            catch (Exception e)
-            {
-                var responseString = "{\"success\":0,\"resultMessage\":\"Error connecting to " + Url + " to access API.  Ensure the server is up and running and try your request again.\"}";
-                listOfAPIs = JsonConvert.DeserializeObject<GetListOfAPIs>(responseString);
-                return View(listOfAPIs);
-            }
 
         }   // end getListOfAPIs API
         //----------------------------------------------------------------------------------------------------------
+
+
+        //------------------------------------------------------------------------------------------------------------
+        // corei API endPointExecutionTimeOnly
+        //------------------------------------------------------------------------------------------------------------
+        public async Task<IActionResult> endPointExecutionTimeOnly(string jsonRequest)
+        {
+
+            var responseString = await ExecuteCoreiHttpRequest<EndPointExecutionTimeOnly>(jsonRequest);
+            g_executionTime = JsonConvert.DeserializeObject<EndPointExecutionTimeOnly>(responseString);
+            return View(g_executionTime);
+
+        }   
+        // end getTableLayout API
+        //----------------------------------------------------------------------------------------------------------
+
+
 
         //------------------------------------------------------------------------------------------------------------
         // corei API getTableLayout
@@ -165,66 +138,14 @@ namespace coreiWS.Controllers
         public async Task<IActionResult> getTableLayout(string jsonRequest)
         {
 
-            // Get = jsonRequest/REST parm passed in url
-            //  - Example REST with customer number parm - http://wwww.yourdomain.com/rest/rst00001r/203
-            // Post = jsonRequest passed in body
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                //RequestUri = new Uri(Url + jsonRequest), 
-                RequestUri = new Uri(Url),
-                Content = new StringContent(jsonRequest, System.Text.Encoding.Default, "text/plain"),
-            };
+            var responseString = await ExecuteCoreiHttpRequest<GetTableLayout>(jsonRequest);
+            g_tableLayout = JsonConvert.DeserializeObject<GetTableLayout>(responseString);
+            return View(g_tableLayout);
 
-            var client = _clientFactory.CreateClient();
+        }   
+        // end getTableLayout API
+        //----------------------------------------------------------------------------------------------------------
 
-            client.DefaultRequestHeaders.Authorization =
-                 new AuthenticationHeaderValue(
-                     "Basic", Convert.ToBase64String(
-                                                     System.Text.ASCIIEncoding.ASCII.GetBytes(
-                                                                                           $"{userProfile}:{password}")));
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            try
-            {
-                var response = await client.SendAsync(request);
-
-
-                if (response.IsSuccessStatusCode)
-                {
-                    // corei will return a http status code stating whether API call successful or not, along with response data
-                }
-                else
-                {
-                    // corei will return a http status code, however, if an error, it will be provided in a user friendly message in the json response
-                }
-
-                // when not a client/server connection issue, always load response to the model... supports success/error messages
-                try { 
-                var responseString = await response.Content.ReadAsStringAsync();
-                tableLayout = JsonConvert.DeserializeObject<GetTableLayout>(responseString);
-                return View(tableLayout);
-                  }
-                   // api json response issue
-                catch (Exception e)
-                  {
-                     var responseString = "{\"success\":0,\"resultMessage\":\"Corei-Rst API getTableLayout json response appears to be invalid\"}";
-                     tableLayout = JsonConvert.DeserializeObject<GetTableLayout>(responseString);
-                     return View(tableLayout);
-                    }
-
-        }
-            // client/server connection issue
-            catch (Exception e)
-            {
-                var responseString = "{\"success\":0,\"resultMessage\":\"Error connecting to " + Url + " to access API.  Ensure the server is up and running and try your request again.\"}";
-                tableLayout = JsonConvert.DeserializeObject<GetTableLayout>(responseString);
-                return View(tableLayout);
-            }
-
-        }   // end getTableLayout API
-            //----------------------------------------------------------------------------------------------------------
 
         //------------------------------------------------------------------------------------------------------------
         // corei API call getCustomerBankAccountInfo
@@ -232,14 +153,79 @@ namespace coreiWS.Controllers
         public async Task<IActionResult> getCustomerBankAccountInfo( string jsonRequest)
         {
 
+            var responseString = await ExecuteCoreiHttpRequest<GetCustomerBankAccountInfo>(jsonRequest);
+            g_bankAccountInfo = JsonConvert.DeserializeObject<GetCustomerBankAccountInfo>(responseString);
+            return View(g_bankAccountInfo);
+
+        }   
+        // end getCustomerBankAccountInfo API
+        //----------------------------------------------------------------------------------------------------------
+
+
+        //------------------------------------------------------------------------------------------------------------
+        // corei API call modifyAPIRequest
+        //------------------------------------------------------------------------------------------------------------
+        [HttpGet]
+        [HttpPost]
+        public async Task<IActionResult> modifyAPIRequest(bool displayOnly, string apiLibrary, string apiCommand, string requestExample)
+        {
+
+            if (requestExample is null)
+            {
+                requestExample = "";
+            };
+            requestExample = JsonConvert.ToString(requestExample);
+
+            if (displayOnly)
+            {
+                var viewJson = "{\"success\":1,\"resultMessage\":\"Success\",\"list\":[" +
+                                         "{\"apiLibrary\":\"" + apiLibrary + 
+                                          "\",\"apiCommand\":\"" + apiCommand + 
+                                          "\",\"requestExample\":" + requestExample + "}]}";
+                g_apiRequest = JsonConvert.DeserializeObject<ModifyAPIRequest>(viewJson);
+                return View(g_apiRequest);
+            }
+
+            var jsonRequest = "{\"env\":\"xxx\",\"command\":\"modifyAPIRequest\",\"payload\":{" +
+                "                        \"apiLibrary\":\"" + apiLibrary + 
+                                        "\",\"apiCommand\":\"" + apiCommand + 
+                                        "\",\"requestExample\":" + requestExample + 
+                                        "}}";
+
+
+            var responseString = await ExecuteCoreiHttpRequest<ModifyAPIRequest>(jsonRequest);
+            g_apiRequest = JsonConvert.DeserializeObject<ModifyAPIRequest>(responseString);
+            return View(g_apiRequest);
+
+        }   
+        // end modifyAPIRequest API
+        //----------------------------------------------------------------------------------------------------------
+
+
+        //------------------------------------------------------------------------------------------------------------
+        // display corei overview
+        //------------------------------------------------------------------------------------------------------------
+        public IActionResult coreiOverview()
+        {
+            return View();
+        }
+
+
+        //------------------------------------------------------------------------------------------------------------
+        // display corei overview
+        //------------------------------------------------------------------------------------------------------------
+        public async Task<string> ExecuteCoreiHttpRequest<T>(string jsonRequest)
+        {
+
+
             // Get = jsonRequest/REST parm passed in url
-            //  - Example REST with customer number parm - http://wwww.yourdomain.com/rest/rst00001r/203
+            //  - Example REST with customer number parm - http://wwww.yourdomain.com/rest/rst00001r/commandName/203
             // Post = jsonRequest passed in body
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
                 //RequestUri = new Uri(Url + jsonRequest), 
-                RequestUri = new Uri(Url),
+                RequestUri = new Uri(g_Url),
                 Content = new StringContent(jsonRequest, System.Text.Encoding.Default, "text/plain"),
             };
 
@@ -249,7 +235,7 @@ namespace coreiWS.Controllers
                  new AuthenticationHeaderValue(
                      "Basic", Convert.ToBase64String(
                                                      System.Text.ASCIIEncoding.ASCII.GetBytes(
-                                                                                           $"{userProfile}:{password}")));
+                                                                                           $"{g_userProfile}:{g_password}")));
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -269,39 +255,34 @@ namespace coreiWS.Controllers
 
                 // when not a client/server connection issue, always load response to the model... supports success/error messages
                 try
-                { 
+                {
+                    //---------------------------------------------------------------
+                    // good response
+                    //---------------------------------------------------------------
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    return responseString;
+                }
+                    //---------------------------------------------------------------
+                    // api json response issue
+                    //---------------------------------------------------------------
+                    catch (Exception e)
+                    {
+                   
+                    return g_coreiErrorJSON;
+                }
 
-                var responseString = await response.Content.ReadAsStringAsync();
-                bankAccountInfo = JsonConvert.DeserializeObject<GetCustomerBankAccountInfo>(responseString);
-                return View(bankAccountInfo);
             }
-            // api json response issue
-            catch (Exception e)
-            {
-                var responseString = "{\"success\":0,\"resultMessage\":\"Corei-Rst API getCustomerBankAccountInfo json response appears to be invalid\"}";
-                bankAccountInfo = JsonConvert.DeserializeObject<GetCustomerBankAccountInfo>(responseString);
-                return View(bankAccountInfo);
-            }
+               //---------------------------------------------------------------
+               // server endpoint connection issue
+               //---------------------------------------------------------------
+               catch (Exception e)
+               {
 
+                return g_coreiErrorServer;
+
+            }
         }
-            // client/server connection issue
-            catch (Exception e)
-            {
-                var responseString = "{\"success\":0,\"resultMessage\":\"Error connecting to " + Url + " to access API.  Ensure the server is up and running and try your request again.\"}";
-                bankAccountInfo = JsonConvert.DeserializeObject<GetCustomerBankAccountInfo>(responseString);
-                return View(bankAccountInfo);
-            }
 
-        }   // end getCustomerBankAccountInfo API
-            //----------------------------------------------------------------------------------------------------------
-
-        //------------------------------------------------------------------------------------------------------------
-        // display corei overview
-        //------------------------------------------------------------------------------------------------------------
-        public IActionResult coreiOverview()
-        {
-            return View();
-        }
 
     }
 }

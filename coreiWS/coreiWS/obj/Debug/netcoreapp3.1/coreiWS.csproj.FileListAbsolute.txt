@@ -39,3 +39,6 @@ C:\Users\jeffe\Desktop\dotNetTutorial\coreiWS\coreiWS\coreiWS\obj\Debug\netcorea
 C:\Users\jeffe\Desktop\dotNetTutorial\coreiWS\coreiWS\coreiWS\obj\Debug\netcoreapp3.1\Razor\Views\Home\GetTableLayout.cshtml.g.cs
 C:\Users\jeffe\Desktop\dotNetTutorial\coreiWS\coreiWS\coreiWS\obj\Debug\netcoreapp3.1\Razor\Views\Home\GetCustomerBankAccountInfo.cshtml.g.cs
 C:\Users\jeffe\Desktop\dotNetTutorial\coreiWS\coreiWS\coreiWS\obj\Debug\netcoreapp3.1\Razor\Views\Home\CoreiOverview.cshtml.g.cs
+C:\Users\jeffe\Desktop\dotNetTutorial\coreiWS\coreiWS\coreiWS\obj\Debug\netcoreapp3.1\Razor\Views\Home\ModifyAPIRequest.cshtml.g.cs
+C:\Users\jeffe\Desktop\dotNetTutorial\coreiWS\coreiWS\coreiWS\obj\Debug\netcoreapp3.1\Razor\Views\Home\EndPointExecutionTimeOnly.cshtml.g.cs
+C:\Users\jeffe\Desktop\dotNetTutorial\coreiWS\coreiWS\coreiWS\obj\Debug\netcoreapp3.1\Razor\Views\ModifyAPIRequest.cshtml.g.cs
