@@ -79,9 +79,12 @@ namespace coreiWS.Controllers
         // traditionally IBMi userProfiles and passwords are 10 long all caps, but more modern configs include 
         // 128length passwords that are case sensitive.
         const string g_userProfile = "XXXXXXXXXX";
-        const string g_password = "Xxxxxxxxxx";
+        const string g_password = "xxxxxxxxxx";
         const string g_coreiErrorJSON   = "{\"success\":0,\"resultMessage\":\"" + "Corei-Rst API modifyAPIRequest json response appears to be invalid\"}";
         const string g_coreiErrorServer = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  Ensure the server is up and running and try your request again.\"}";
+        const string g_coreiErrorServerUnauth = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  " +
+                                                  "Check your IBMi UserProfile/Password credentials and also ensure that the " +
+                                                  "user profile is of class *PGMR.\"}";
 
         public HomeController(IHttpClientFactory clientFactory)
         {
@@ -239,6 +242,12 @@ namespace coreiWS.Controllers
             {
                 var response = await client.SendAsync(request);
 
+                // determine if server/credentials issue...
+                if (response.StatusCode == (HttpStatusCode)401)
+                {
+                    return (JsonConvert.DeserializeObject<T>(g_coreiErrorServerUnauth));
+
+                }
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -271,14 +280,13 @@ namespace coreiWS.Controllers
                //---------------------------------------------------------------
                // server endpoint connection issue
                //---------------------------------------------------------------
-               catch (Exception e)
+               catch (WebException e)
                {
 
                 return (JsonConvert.DeserializeObject<T>(g_coreiErrorServer));
 
             }
         }
-
 
     }
 }
