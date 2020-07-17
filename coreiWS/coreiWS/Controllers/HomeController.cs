@@ -75,11 +75,11 @@ namespace coreiWS.Controllers
 
         // the IBMi server COREIRST install will allow an IBMi admin/dev to create/deploy the server instance
         // it will be referenced as follows with routing to the IBMi Core-iRST webservice middleware.
-        const string g_Url = "https://yourIBMi.com/rest/rst00001r/";
+        const string g_Url = "https://jvaughn1.powerbunker.com/rest/rst00001r/";
         // traditionally IBMi userProfiles and passwords are 10 long all caps, but more modern configs include 
         // 128length passwords that are case sensitive.
-        const string g_userProfile = "XXXXXXXXXX";
-        const string g_password = "xxxxxxxxxx";
+        const string g_userProfile = "COREIADM";
+        const string g_password = "CharChar";
         const string g_coreiErrorJSON   = "{\"success\":0,\"resultMessage\":\"" + "Corei-Rst API modifyAPIRequest json response appears to be invalid\"}";
         const string g_coreiErrorServer = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  Ensure the server is up and running and try your request again.\"}";
         const string g_coreiErrorServerUnauth = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  " +
@@ -102,7 +102,7 @@ namespace coreiWS.Controllers
             // does not reference any files outside of COREIRST, use xxx.
             // NOTE to COREIRST IBMi API developer - if any tables are used outside of the COREIRST library, then those
             // tables must be qualified by library name (schema.table) within the API OR a library list must be
-            // specified that includes the library(s) of those referenced file(s)...
+            // specified that includes the library(s) of those referenced file(s)... (basic IBMi admin stuff)...
             // the library list can be set from within the IBMi CoreiRST (Maintain API Library - F7=Maintain ENV Libl)
             const string jsonRequest = "{\"env\":\"xxx\",\"command\":\"getListOfAPIs\",\"payload\":[" +
                                               "{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"endPointExecutionTimeOnly\"}" +
@@ -280,7 +280,7 @@ namespace coreiWS.Controllers
                //---------------------------------------------------------------
                // server endpoint connection issue
                //---------------------------------------------------------------
-               catch (WebException e)
+               catch (Exception e)
                {
 
                 return (JsonConvert.DeserializeObject<T>(g_coreiErrorServer));

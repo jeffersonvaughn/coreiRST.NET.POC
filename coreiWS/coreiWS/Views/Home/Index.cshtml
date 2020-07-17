@@ -1,6 +1,5 @@
 ﻿@model GetListOfAPIs
 
-
 @{
     ViewData["Title"] = "Index";
 }
@@ -8,15 +7,17 @@
     <div class="text-center">
         <h1 class="display-8">Core-i Solutions</h1>
         <p> Core-i RST IBMi Server Consumable Sample SQLRPGLE API's</p>
-        <p> This list of sample API's is pulled directly from the IBMi Core-iRST API library.
+        <p>
+            This list of sample API's is pulled directly from the IBMi Core-iRST API library.
             This POC application shows you just how easy it is to consume API's written that live
             directly on the IBMi written in native IBMi code (RPG, COBOL, SQLRPGLE, etc.)  IBMi side
             API programs do not interface with any HTTP or cross platform lingo.  Traditional IBMi
-            RPG developers can easily create these API's and Core-i RST and you do the rest of the work by simply 
-            consuming a familiar REST/Webservice from an HTTP endpoint.</p>
+            RPG developers can easily create these API's and Core-i RST and you do the rest of the work by simply
+            consuming a familiar REST/Webservice from an HTTP endpoint.
+        </p>
 
         <div class="col-3">
-            <a button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("coreiOverview")'">Display Core-i RST Overview</button></a>
+            <a button class="button btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("coreiOverview")'">Display Core-i RST Overview</button></a>
             <p>
                 <br />
             </p>
@@ -26,7 +27,7 @@
         @if (Model.success == 1)
         {
 
-            <table class="table table-bordered table-hover">
+            <table class="table">
                 <tr class="table-danger">
                     <th>API Library</th>
                     <th>API Command</th>
@@ -38,31 +39,32 @@
                 @foreach (var item in Model.list)
 
                 {
-            <tr class="table-info">
-                <td>@item.apiLibrary</td>
-                <td>@item.apiCommand</td>
-                <td>@item.ibmiPgm</td>
-                <td>
-                    <dd>
+                    <tr class="table-info">
+                        <td>@item.apiLibrary</td>
+                        <td>@item.apiCommand</td>
+                        <td>@item.ibmiPgm</td>
+                        <td>
+                            <dd>
 
-                        @if (@item.firstChar == "{")
-                        {
-                            <pre>@Newtonsoft.Json.Linq.JToken.Parse(@item.requestExample).ToString()</pre>
-                        }
-                        else
-                        {
-                           <pre>@item.requestExample</pre>
-                        }
-                    </dd>
-                </td>
+                                @if (@item.firstChar == "{")
+                                {
+                                    <pre style="color:blue;">@Newtonsoft.Json.Linq.JToken.Parse(@item.requestExample).ToString()</pre>
+                                }
+                                else
+                                {
+                                    <pre style="color:blue;">@item.requestExample</pre>
+                                }
+                            </dd>
+                        </td>
 
 
-                    <td>
-                        <!-- url.action does not have access to browser side variables (only server side)-->
-                        <button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("modifyAPIRequest", "", new { displayOnly = true,  apiLibrary = item.apiLibrary, apiCommand = item.apiCommand, requestExample = item.requestExample })'">Modify Request Example</button>
-                        <button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action(item.apiCommand, "", new { jsonRequest = item.requestExample })'">Consume IBMi Core-iRST API</button>
-                    </td>
-                </tr>
+                        <td>
+                            <!-- url.action does not have access to browser side variables (only server side)-->
+                            <a button class="button btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("modifyAPIRequest", "", new { displayOnly = true,  apiLibrary = item.apiLibrary, apiCommand = item.apiCommand, requestExample = item.requestExample })'">Modify Request Example</a>
+                            &nbsp;
+                            <a button class="button btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action(item.apiCommand, "", new { jsonRequest = item.requestExample })'">Consume IBMi Core-iRST API</a>
+                        </td>
+                    </tr>
                 }
 
             </table>
@@ -70,7 +72,7 @@
         else
         {
 
-            <dl class="row table table-bordered table-hover">
+            <dl style="color:red;">
 
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.resultMessage)

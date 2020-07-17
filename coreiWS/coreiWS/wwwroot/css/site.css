@@ -9,7 +9,7 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+  color: #0366d6; 
 }
 
 .btn-primary {
@@ -30,9 +30,10 @@ html {
   font-size: 14px;
 }
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
+
 }
 
 .border-top {
@@ -59,8 +60,11 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: black;
+    color: lime;
+
 }
 .footer {
   position: absolute;
@@ -68,4 +72,62 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+/* jhv                      */
+@media screen and (max-width: 1200px) {
+
+    .table {
+        width: 100%;
+        table-layout: fixed;
+        overflow-wrap: break-word;
+    }
+
+    .button {
+        font-size: 12px;
+        padding: 0px 0px;
+    }
+
+}
+
+    @media screen and (max-width: 1093px) {
+
+        .table {
+            width: 100%;
+            table-layout: fixed;
+            overflow-wrap: break-word;
+        }
+
+        .button {
+            font-size: 12px;
+            padding: 0px 0px;
+        }
+    }
+
+@media screen and (max-width: 991px) {
+
+    .table {
+        width: 100%;
+        table-layout: fixed;
+        overflow-wrap: break-word;
+    }
+
+    .button {
+        font-size: 10px;
+        padding: 0px 0px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .table {
+        width: 100%;
+        table-layout: fixed;
+        overflow-wrap: break-word;
+    }
+
+    .button {
+        font-size: 9px;
+        padding: 0px 0px;
+    }
 }
