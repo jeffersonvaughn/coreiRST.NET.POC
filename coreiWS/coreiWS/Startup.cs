@@ -80,6 +80,10 @@ namespace coreiWS
                      name: "modifyAPIRequest",
                      pattern: "{controller=Home}/{action=modifyAPIRequest}/{id?}");
 
+                endpoints.MapControllerRoute(
+                     name: "getListOfCustomers",
+                     pattern: "{controller=Home}/{action=getListOfCustomers}/{id?}");
+
 
             });
         }

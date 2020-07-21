@@ -1,0 +1,83 @@
+﻿@model GetListOfCustomers
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+    <div class="text-center">
+        <h1 class="display-8">Core-i Solutions</h1>
+        <h1 class="display-7">Core-i Rst </h1>
+        <h1 class="display-4">IBMi API: getListOfCustomers </h1>
+        <p> The getListOfCustomers API json request consists of a simple pageSize/pageNumber parameter to allow control of 
+            pulling dummy customer information in a controlled method.
+            This API demonstrates how easy it is to retrieve dynamic application level data from the IBMi.  
+            You will notice there is sensitive data being exposed for Routing/Account#.  
+            Core-i RST paired with Core-i Enc DB2 data encryption/masking product is a seamless solution for securing your enterprise data.  
+            Data is encrypted at rest on the IBMi DB2 database and any request for that data automatically masks it based on IBMi user profile.  
+            Even off platform requests like this .NET application.</p>
+
+
+
+        <div class="col-3">
+            <a button class="btn btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("Index")'">Back To API List</button></a>
+            <p>
+                <br />
+            </p>
+        </div>
+
+
+        @if (Model.success == 1)
+        {
+            <table class="table table-bordered table-hover">
+                <tr class="table-danger">
+                    <th>Customer Number</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Address 1</th>
+                    <th>Address 2</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip Code</th>
+                    <th>Routing Number</th>
+                    <th>Account Number</th>
+                </tr>
+
+                @foreach (var cust in Model.list)
+                {
+                    <tr class="table-info">
+                        <td>@cust.custNo</td>
+                        <td>@cust.firstName</td>
+                        <td>@cust.lastName</td>
+                        <td>@cust.address1</td>
+                        <td>@cust.address2</td>
+                        <td>@cust.city</td>
+                        <td>@cust.state</td>
+                        <td>@cust.zip</td>
+                        <td>@cust.routing</td>
+                        <td>@cust.accountNo</td>
+                    </tr>
+ 
+                }
+            </table>
+        }
+        else
+        {
+
+            <dl style="color:red;">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.resultMessage)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.resultMessage)
+                </dd>
+
+
+            </dl>
+
+        }
+
+    </div>

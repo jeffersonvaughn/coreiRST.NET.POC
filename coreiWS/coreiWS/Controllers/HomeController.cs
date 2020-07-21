@@ -72,14 +72,15 @@ namespace coreiWS.Controllers
         public ModifyAPIRequest           g_apiRequest { get; set; }
         public GetTableLayout             g_tableLayout { get; set; }
         public GetCustomerBankAccountInfo g_bankAccountInfo { get; set; }
+        public GetListOfCustomers         g_customerList { get; set; }
 
         // the IBMi server COREIRST install will allow an IBMi admin/dev to create/deploy the server instance
         // it will be referenced as follows with routing to the IBMi Core-iRST webservice middleware.
-        const string g_Url = "https://jvaughn1.powerbunker.com/rest/rst00001r/";
+        const string g_Url = "https://yourIBMi/rest/rst00001r/";
         // traditionally IBMi userProfiles and passwords are 10 long all caps, but more modern configs include 
         // 128length passwords that are case sensitive.
-        const string g_userProfile = "COREIADM";
-        const string g_password = "CharChar";
+        const string g_userProfile = "XXXXXXXXXX";
+        const string g_password = "Xxxxxxxxxx";
         const string g_coreiErrorJSON   = "{\"success\":0,\"resultMessage\":\"" + "Corei-Rst API modifyAPIRequest json response appears to be invalid\"}";
         const string g_coreiErrorServer = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  Ensure the server is up and running and try your request again.\"}";
         const string g_coreiErrorServerUnauth = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  " +
@@ -108,6 +109,7 @@ namespace coreiWS.Controllers
                                               "{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"endPointExecutionTimeOnly\"}" +
                                               ",{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"getTableLayout\"}" +
                                               ",{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"getCustomerBankAccountInfo\"}" +
+                                              ",{\"apiLibrary\":\"COREIRST\",\"apiCommand\":\"getListOfCustomers\"}" +
                                               "]}";
 
             g_listOfAPIs = (GetListOfAPIs) await ExecuteCoreiHttpRequest<GetListOfAPIs>(jsonRequest);
@@ -157,9 +159,23 @@ namespace coreiWS.Controllers
             g_bankAccountInfo = (GetCustomerBankAccountInfo)await ExecuteCoreiHttpRequest<GetCustomerBankAccountInfo>(jsonRequest);
             return View(g_bankAccountInfo);
 
-        }   
+        }
         // end getCustomerBankAccountInfo API
         //----------------------------------------------------------------------------------------------------------
+
+        //------------------------------------------------------------------------------------------------------------
+        // corei API call getListOfCustomers
+        //------------------------------------------------------------------------------------------------------------
+        public async Task<IActionResult> getListOfCustomers(string jsonRequest)
+        {
+
+            g_customerList = (GetListOfCustomers)await ExecuteCoreiHttpRequest<GetListOfCustomers>(jsonRequest);
+            return View(g_customerList);
+
+        }
+        // end getCustomerBankAccountInfo API
+        //----------------------------------------------------------------------------------------------------------
+
 
 
         //------------------------------------------------------------------------------------------------------------
