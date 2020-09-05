@@ -22,19 +22,12 @@
             string requestExample = Model.list[0].requestExample;
 
             <!-- html.beginform allows browser/server side variables to be passed to controller)-->
-            using (Html.BeginForm("modifyAPIRequest", ""
+            using (Html.BeginForm(Model.list[0].apiCommand, ""
 
                     , new
                     {
-                        displayOnly = false
-                           ,
-                        apiLibrary = Model.list[0].apiLibrary
-                           ,
-                        apiCommand = Model.list[0].apiCommand
-                           ,
-                        onsubmit = "return requestExample"
+                        onsubmit = "return jsonRequest"
                     }
-                    , FormMethod.Post
 
                     ))
 
@@ -71,10 +64,10 @@
                     </dd>
                 </d1>
 
-                <form action="home/modifyAPIRequest" method="POST">
+                <form action=Model.list[0].apiCommand>
                     <label for="requestExample">API Request Example:</label>
-                    <input type="text" name="requestExample" size="100" value=@requestExample><br><br>
-                    <input type="submit" value="Update Request Example" class="btn btn-primary" />
+                    <input type="text" name="jsonRequest" size="100" value=@requestExample><br><br>
+                    <input type="submit" value="Consume API With Modified API Request Example" class="btn btn-primary" />
                 </form>
 
             }

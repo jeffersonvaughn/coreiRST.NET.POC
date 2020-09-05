@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +34,20 @@ namespace coreiWS
                      options.JsonSerializerOptions.WriteIndented = true;
                  });
 
-            services.AddHttpClient();
+            // NOTE: below code disregards any un-trusted certs and allows connections!
+            //       This is fine with the jeffersonvaughn.com website since the application 
+            //       controls EXACTLY which API's are called from jvaughn1.powerbunker.com .
+            //       For ANY customer implementation of CoreiRST, they will need to use LetsEncrypt or
+            //       a paid SSL certificate solution to implement a truted SSL certificate on the IBMi server,
+            //       so that the webApp can correctly connect ONLY to a trusted certificate.  In there case,
+            //       the below code would not be used.
+            services.AddHttpClient("coreiClient", client => {
+            }).ConfigurePrimaryHttpMessageHandler(() => {
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                return handler;
+            });
+
 
         }
 

@@ -57,11 +57,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiWS\\coreiWS\\coreiWS\\coreiWS.csproj",
+      "projectUniqueName": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiRST.NET.POC\\coreiWS\\coreiWS\\coreiWS.csproj",
       "projectName": "coreiWS",
-      "projectPath": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiWS\\coreiWS\\coreiWS\\coreiWS.csproj",
+      "projectPath": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiRST.NET.POC\\coreiWS\\coreiWS\\coreiWS.csproj",
       "packagesPath": "C:\\Users\\jeffe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiWS\\coreiWS\\coreiWS\\obj\\",
+      "outputPath": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiRST.NET.POC\\coreiWS\\coreiWS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\jeffe\\AppData\\Roaming\\NuGet\\NuGet.Config",

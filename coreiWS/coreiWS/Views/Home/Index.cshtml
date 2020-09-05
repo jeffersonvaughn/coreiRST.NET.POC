@@ -72,7 +72,7 @@
 
                         <td>
                             <!-- url.action does not have access to browser side variables (only server side)-->
-                            <a button class="button btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("modifyAPIRequest", "", new { displayOnly = true,  apiLibrary = item.apiLibrary, apiCommand = item.apiCommand, requestExample = item.requestExample })'">Modify Request Example</a>
+                            <a button class="button btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action("modifyAPIRequest", "", new { apiLibrary = item.apiLibrary, apiCommand = item.apiCommand, requestExample = item.requestExample })'">Modify Request Example</a>
                             &nbsp;
                             <a button class="button btn-info form-control text-white" typeof="button" onclick="location.href='@Url.Action(item.apiCommand, "", new { jsonRequest = item.requestExample })'">Consume IBMi Core-iRST API</a>
                         </td>

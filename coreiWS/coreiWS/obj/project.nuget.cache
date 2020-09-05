@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "U8KO1MeWhpXkz5x9x53UzsrSQZc+A//jJYw2NIrQjXiim6OrI/OEn+1LqsdShZoJtNSzWG4BwTfSfuqyVoCh8Q==",
+  "dgSpecHash": "HTOVuiNL0Wt7VyKOFA5Mvhu0VWFBvPLgl2/g4PN/ylQ1ExTyLil9aEL9eFyYo5Uo4PhRAb9BBOt4N2GzixVfJA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiWS\\coreiWS\\coreiWS\\coreiWS.csproj",
+  "projectFilePath": "C:\\Users\\jeffe\\Desktop\\dotNetTutorial\\coreiRST.NET.POC\\coreiWS\\coreiWS\\coreiWS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jeffe\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
   ],

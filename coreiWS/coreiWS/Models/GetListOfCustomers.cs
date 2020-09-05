@@ -12,20 +12,27 @@ namespace coreiWS.Models
             public string resultMessage { get; set; }
             public List[] list { get; set; }
 
-            public class List
-            {
-                public string custNo { get; set; }
-                public string firstName { get; set; }
-                public string lastName { get; set; }
-                public string address1 { get; set; }
-                public string address2 { get; set; }
-                public string city { get; set; }
-                public string state { get; set; }
-                public string zip { get; set; }
-                public string routing { get; set; }
-                public string accountNo { get; set; }
-            }
-
+        public class List
+        {
+            public string pageSize { get; set; }
+            public string pageNumber { get; set; }
+            public Customer[] customers { get; set; }
         }
+
+        public class Customer
+        {
+            public string custNo { get; set; }
+            public string firstName { get; set; }
+            public string lastName { get; set; }
+            public string address1 { get; set; }
+            public string address2 { get; set; }
+            public string city { get; set; }
+            public string state { get; set; }
+            public string zip { get; set; }
+            public string routing { get; set; }
+            public string accountNo { get; set; }
+        }
+
+    }
 
 }

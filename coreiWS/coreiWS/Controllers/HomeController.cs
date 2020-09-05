@@ -76,11 +76,11 @@ namespace coreiWS.Controllers
 
         // the IBMi server COREIRST install will allow an IBMi admin/dev to create/deploy the server instance
         // it will be referenced as follows with routing to the IBMi Core-iRST webservice middleware.
-        const string g_Url = "https://yourIBMi/rest/rst00001r/";
+        const string g_Url = "https://yourIBMi.com/rest/rst00001r/";
         // traditionally IBMi userProfiles and passwords are 10 long all caps, but more modern configs include 
         // 128length passwords that are case sensitive.
         const string g_userProfile = "XXXXXXXXXX";
-        const string g_password = "Xxxxxxxxxx";
+        const string g_password = "XxxxXxxxxx";
         const string g_coreiErrorJSON   = "{\"success\":0,\"resultMessage\":\"" + "Corei-Rst API modifyAPIRequest json response appears to be invalid\"}";
         const string g_coreiErrorServer = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  Ensure the server is up and running and try your request again.\"}";
         const string g_coreiErrorServerUnauth = "{\"success\":0,\"resultMessage\":\"" + "Error connecting to IBMi Http Endpoint.  " +
@@ -183,7 +183,7 @@ namespace coreiWS.Controllers
         //------------------------------------------------------------------------------------------------------------
         [HttpGet]
         [HttpPost]
-        public async Task<IActionResult> modifyAPIRequest(bool displayOnly, string apiLibrary, string apiCommand, string requestExample)
+        public IActionResult modifyAPIRequest(string apiLibrary, string apiCommand, string requestExample)
         {
 
             if (requestExample is null)
@@ -192,25 +192,12 @@ namespace coreiWS.Controllers
             };
             requestExample = JsonConvert.ToString(requestExample);
 
-            if (displayOnly)
-            {
                 var viewJson = "{\"success\":1,\"resultMessage\":\"Success\",\"list\":[" +
                                          "{\"apiLibrary\":\"" + apiLibrary + 
                                           "\",\"apiCommand\":\"" + apiCommand + 
                                           "\",\"requestExample\":" + requestExample + "}]}";
                 g_apiRequest = JsonConvert.DeserializeObject<ModifyAPIRequest>(viewJson);
                 return View(g_apiRequest);
-            }
-
-            var jsonRequest = "{\"env\":\"xxx\",\"command\":\"modifyAPIRequest\",\"payload\":{" +
-                "                        \"apiLibrary\":\"" + apiLibrary + 
-                                        "\",\"apiCommand\":\"" + apiCommand + 
-                                        "\",\"requestExample\":" + requestExample + 
-                                        "}}";
-
-
-            g_apiRequest = (ModifyAPIRequest)await ExecuteCoreiHttpRequest<ModifyAPIRequest>(jsonRequest);
-            return View(g_apiRequest);
 
         }   
         // end modifyAPIRequest API
@@ -244,8 +231,15 @@ namespace coreiWS.Controllers
                 Content = new StringContent(jsonRequest, System.Text.Encoding.Default, "text/plain"),
             };
 
-            var client = _clientFactory.CreateClient();
+            // use named client from startup
+            // NOTE: startup disregards any un-trusted certs and allows connections
+            //       this is fine with the jeffersonvaughn.com website as long as the application 
+            //       controls EXACTLY which API's are called from jvaughn1.powerbunker.com .
+            //       For ANY customer implementation of CoreiRST, they will need to use LetsEncrypt or
+            //       a paid SSL certificate solution to implement a truted SSL certificate on the IBMi server.
+            var client = _clientFactory.CreateClient("coreiClient");
 
+            // for userProfile/password auth...
             client.DefaultRequestHeaders.Authorization =
                  new AuthenticationHeaderValue(
                      "Basic", Convert.ToBase64String(
