@@ -233,10 +233,11 @@ namespace coreiWS.Controllers
 
             // use named client from startup
             // NOTE: startup disregards any un-trusted certs and allows connections
-            //       this is fine with the jeffersonvaughn.com website as long as the application 
-            //       controls EXACTLY which API's are called from jvaughn1.powerbunker.com .
-            //       For ANY customer implementation of CoreiRST, they will need to use LetsEncrypt or
+            //       IBMi has ability to create its ow SSL certs - though they are not a publicly trusted CA
+            //       Its suggested for ANY customer implementation of CoreiRST, they will need to use LetsEncrypt or
             //       a paid SSL certificate solution to implement a truted SSL certificate on the IBMi server.
+	    //       Or use the IBMi applied cert with this understanding that ANY other servers trust warning will
+            //       be ignored.  If you choose not to, simply modify the coreiClient code piece from the startup.
             var client = _clientFactory.CreateClient("coreiClient");
 
             // for userProfile/password auth...
