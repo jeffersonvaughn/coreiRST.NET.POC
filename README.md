@@ -30,4 +30,4 @@ Corei-RST provides an IBMi http framework (using Apache) and IBMi side API libra
             NOTE: 
             Happy to help with any implementation/configuration of the Core-i RST Framework
             coreibmi@gmail.com
-            Documentation can be found at https://jeffersonvaughn.com/Core-i-Product-Downloads/ 
+            Documentation can be found at https://jeffersonvaughn.com/Home/coreiProducts
