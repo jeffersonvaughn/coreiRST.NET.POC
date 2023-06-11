@@ -35,7 +35,7 @@ using System.Runtime.CompilerServices;
 //-----------------------------------------------------------------  
 
 // NOTE: happy to help with any implementation/configuration of the Core-i RST Framework
-//       coreibmi.solutions@gmail.com
+//       corei@jeffersonvaughn.com
 //       Documentation can be found at https://jeffersonvaughn.com/Core-i-Product-Downloads/
 //
 // Overiview:  Corei-RST provides an IBMi http framework (using Apache) and IBMi side API library that assists with 
